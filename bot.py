@@ -37,8 +37,9 @@ def getlist(update, context):
         return -1
     for i in range(len(r)):
         full_str = r[i]['title'] + "\n"
-        full_str += "Start: " + parseTime(r[i]['start']) + "\n"
-        full_str += "Finish: " + parseTime(r[i]['finish']) + "\n"
+        full_str += "Start:   " + parseTime(r[i]['start']) + "\n"
+        full_str += "Finish:  " + parseTime(r[i]['finish']) + "\n"
+        full_str += "Url:     " + r[i]['url'] + "\n"
         update.message.reply_text(full_str)
 
 
