@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#import logging
 from configs.credentials import token
 
+import time
+import requests
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 def start(update, context):
@@ -11,7 +12,15 @@ def start(update, context):
     update.message.reply_text('Hello here!\nI am a ctftime notifier bot!')
 
 def getlist(update, context):
-    update.message.reply_text("none")
+    limit = 100
+    start_time = int(time.time())
+    # 1209600 - 2 weeks
+    end_time = int(time.time() + 1209600)
+    url = "https://ctftime.org/api/v1/events/?limit={0}&start={1}&finish={2}".format(limit, start_time, end_time)
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0'}
+    r = requests.get(url, headers=headers).json()
+    to_send = r[0]['title']
+    update.message.reply_text(to_send)
 
 
 def help(update, context):
