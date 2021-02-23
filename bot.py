@@ -36,9 +36,9 @@ def getlist(update, context):
         update.message.reply_text("Nothing here for you :(")
         return -1
     for i in range(len(r)):
-        #full_str = r[i]['title'] + "\n"
-        full_str = "Start: " + parseTime(r[i]['start'])
-        #full_str += "Finish: " + parseTime(r[i]['finish']) + "\n"
+        full_str = r[i]['title'] + "\n"
+        full_str += "Start: " + parseTime(r[i]['start']) + "\n"
+        full_str += "Finish: " + parseTime(r[i]['finish']) + "\n"
         update.message.reply_text(full_str)
 
 
