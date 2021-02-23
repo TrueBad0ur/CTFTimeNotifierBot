@@ -6,10 +6,23 @@ from configs.credentials import token
 import time
 import requests
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from datetime import datetime
+from dateutil import tz
 
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hello here!\nI am a ctftime notifier bot!')
+
+def parseTime(time_str):
+    from_zone = tz.gettz('UTC')
+    to_zone = tz.gettz('Europe/Moscow')
+    time_str = time_str.replace("T", " ").split("+")[0]
+    utc = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+    utc = utc.replace(tzinfo=from_zone)
+    local = utc.astimezone(to_zone)
+    local = local.strftime("%Y-%m-%d %H:%M:%S")
+    return local
+
 
 def getlist(update, context):
     limit = 100
@@ -19,8 +32,14 @@ def getlist(update, context):
     url = "https://ctftime.org/api/v1/events/?limit={0}&start={1}&finish={2}".format(limit, start_time, end_time)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0'}
     r = requests.get(url, headers=headers).json()
-    to_send = r[0]['title']
-    update.message.reply_text(to_send)
+    if len(r) == 0:
+        update.message.reply_text("Nothing here for you :(")
+        return -1
+    for i in range(len(r)):
+        #full_str = r[i]['title'] + "\n"
+        full_str = "Start: " + parseTime(r[i]['start'])
+        #full_str += "Finish: " + parseTime(r[i]['finish']) + "\n"
+        update.message.reply_text(full_str)
 
 
 def help(update, context):
