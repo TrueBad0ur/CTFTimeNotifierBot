@@ -4,8 +4,8 @@ Lets you get the schedule of competitions
 </h3>
 
 <h2>INSTALL AND START</h2>
-You should create folder **configs** and file **credentials.py** inside it.
 
+You should create folder **configs** and file **credentials.py** inside it.
 token = "your token of bot here"
 
 
