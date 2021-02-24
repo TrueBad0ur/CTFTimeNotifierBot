@@ -17,3 +17,6 @@ pip3 install -r requirments.txt
 python3 bot.py
 ```
 
+In **BotFather** you should use `/setcommands` for your bot and add description to `/getlist` command.
+
+When you add your bot to a chat, you can restrict it in **Embedding links** (in admin settings) so that it would not preview links
