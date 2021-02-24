@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hello here!\nI am a ctftime notifier bot!\n/getlist - get current list of CTFs\n')
+    update.message.reply_text('Hello here\nI am a `CTFTIME NOTIFIER BOT`\nActually I don\'t do much, just send you current\(2 weeks from now\) available CTFs\n/getlist \- *get current list of CTFs*\n', parse_mode='MarkdownV2')
 
 def parseTime(time_str):
     from_zone = tz.gettz('UTC')
@@ -27,7 +27,7 @@ def parseTime(time_str):
     utc = datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
     utc = utc.replace(tzinfo=from_zone)
     local = utc.astimezone(to_zone)
-    local = local.strftime("%Y-%m-%d %H:%M:%S")
+    local = local.strftime("%H:%M %d-%m-%Y")
     return local
 
 
@@ -47,6 +47,7 @@ def getlist(update, context):
         full_str += "Start:   " + parseTime(r[i]['start']) + "\n"
         full_str += "Finish:  " + parseTime(r[i]['finish']) + "\n"
         full_str += "Url:     " + r[i]['url'] + "\n"
+        full_str += "Format:  " + r[i]['format'] + "\n"
         update.message.reply_text(full_str)
 
 
