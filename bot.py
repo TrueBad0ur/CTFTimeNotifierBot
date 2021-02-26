@@ -20,6 +20,7 @@ def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hello here\nI am a `CTFTIME NOTIFIER BOT`\nActually I don\'t do much, just send you current\(2 weeks from now\) available CTFs\n/getlist \- *get current list of CTFs*\n', parse_mode='MarkdownV2')
 
+
 def parseTime(time_str):
     from_zone = tz.gettz('UTC')
     to_zone = tz.gettz('Europe/Moscow')
@@ -33,6 +34,26 @@ def parseTime(time_str):
 
 def getlist(update, context):
     limit = 100
+    start_time = int(time.time())
+    # 1209600 - 2 weeks
+    end_time = int(time.time() + 1209600)
+    url = "https://ctftime.org/api/v1/events/?limit={0}&start={1}&finish={2}".format(limit, start_time, end_time)
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0'}
+    r = requests.get(url, headers=headers).json()
+    if len(r) == 0:
+        update.message.reply_text("Nothing here for you :(")
+        return -1
+    for i in range(len(r)):
+        full_str = r[i]['title'] + "\n"
+        full_str += "Start:   " + parseTime(r[i]['start']) + "\n"
+        full_str += "Finish:  " + parseTime(r[i]['finish']) + "\n"
+        full_str += "Url:     " + r[i]['url'] + "\n"
+        full_str += "Format:  " + r[i]['format'] + "\n"
+        update.message.reply_text(full_str)
+
+
+def next(update, centext):
+    limit = 1
     start_time = int(time.time())
     # 1209600 - 2 weeks
     end_time = int(time.time() + 1209600)
@@ -73,6 +94,7 @@ def main():
 
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("getlist", getlist))
+    dp.add_handler(CommandHandler("next", next))
     dp.add_handler(CommandHandler("help", help))
 
     # answer reply to user
