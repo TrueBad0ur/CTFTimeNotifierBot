@@ -52,7 +52,7 @@ def getlist(update, context):
         update.message.reply_text(full_str)
 
 
-def next(update, centext):
+def next(update, context):
     limit = 1
     start_time = int(time.time())
     # 1209600 - 2 weeks
