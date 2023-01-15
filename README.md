@@ -1,6 +1,6 @@
 <h3>Simple bot working on ctftime.org api
 
-Lets you get the schedule of competitions
+Let you get the schedule of competitions
 </h3>
 
 <h2>INSTALL AND START</h2>
